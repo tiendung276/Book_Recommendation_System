@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 import tkinter as tk
 from pandastable import Table, TableModel
 
-book_data = pd.read_csv("book_data.csv", sep=",")
+book_data = pd.read_csv("data\\book_data.csv", sep=",")
 
 book_data = book_data.drop_duplicates()
 le = LabelEncoder()
@@ -36,7 +36,7 @@ def recommend_books():
         book_features = X[book_to_recommend_index]
         distances, indices = knn.kneighbors([book_features])
 
-        recommended_books_indices = indices[0][1:]  # Loại bỏ cuốn sách đầu tiên vì nó là cuốn sách cần tìm
+        recommended_books_indices = indices[0][1:]
         recommended_books = book_data.iloc[recommended_books_indices]
 
         pt.updateModel(TableModel(recommended_books))
