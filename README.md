@@ -27,7 +27,7 @@ This is a simple Python project that demonstrates a book recommendation system u
 
 ### To use the book recommendation system, follow these instructions:
 
-1. Run the project by executing the `book_recommendation_system.py` script.
+1. Run the project by executing the `main.py` script.
 2. A graphical user interface (GUI) window will open.
 3. Enter a book's ID in the input field and click the "Ok" button.
 4. The system will use KNN to recommend similar books based on author, quantity, category, number of reviews, average rating, and manufacturer.
