@@ -1,13 +1,6 @@
-# Import các thư viện cần thiết
 import pandas as pd
-import numpy as np
 import sklearn
 from sklearn.neighbors import NearestNeighbors
-from collections import Counter
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
-import tkinter as tk
-from pandastable import Table, TableModel
 
 book_data = pd.read_csv("data\\book_data.csv", sep=",")
 
