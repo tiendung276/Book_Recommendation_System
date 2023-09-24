@@ -4,12 +4,11 @@ from sklearn.neighbors import NearestNeighbors
 
 book_data = pd.read_csv("data\\book_data.csv", sep=",")
 
-"""Data Preprocessing"""
 book_data = book_data.drop_duplicates()
 
 le = sklearn.preprocessing.LabelEncoder()
 
-pages = (pd.to_numeric(book_data['pages'], errors='coerce')).fillna(180)
+pages = pd.to_numeric(book_data['pages'], errors='coerce').fillna(180)
 book_data["avg_rating"] = book_data["avg_rating"].fillna(0)
 book_data["quantity"] = book_data["quantity"].fillna(0)
 book_data["authors"] = book_data["authors"].fillna('Unknown')
@@ -31,13 +30,13 @@ book_to_recommend_index = book_data[book_data["product_id"] == book_to_recommend
 
 knn = NearestNeighbors(n_neighbors=7, metric='euclidean')
 knn.fit(X)
+
 distances, indices = knn.kneighbors([X[book_to_recommend_index]])
 
 recommended_books_indices = indices[0][1:]
 recommended_books = book_data.iloc[recommended_books_indices]
 
 features = ["authors", "quantity", "category", "n_review", "avg_rating", "manufacturer"]
-print(
-    f"Book to recommend: {book_data.loc[book_to_recommend_index, 'title']} by {book_data.loc[book_to_recommend_index, 'authors']}")
+print(f"Book to recommend: {book_data.loc[book_to_recommend_index, 'title']} by {book_data.loc[book_to_recommend_index, 'authors']}")
 print("\nRecommended books:")
 print(recommended_books[features].to_string(index=False))
