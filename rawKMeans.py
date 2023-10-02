@@ -52,9 +52,7 @@ print("\nRecommended books by KMeans:")
 print(recommended_books_kmeans[features].to_string(index=False))
 
 recommended_books_indices_knn_set = set(recommended_books_indices_knn)
-
 recommended_books_indices_kmeans_set = set(recommended_books_indices_kmeans)
-
 common_indices = recommended_books_indices_knn_set & recommended_books_indices_kmeans_set
 
 print(
