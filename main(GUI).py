@@ -5,7 +5,6 @@ import tkinter as tk
 from pandastable import Table, TableModel
 
 book_data = pd.read_csv("data\\book_data.csv", sep=",")
-
 book_data = book_data.drop_duplicates()
 le = LabelEncoder()
 book_data["authors"] = book_data["authors"].fillna('Unknown')
