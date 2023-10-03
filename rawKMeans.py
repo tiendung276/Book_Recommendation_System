@@ -14,6 +14,7 @@ pages = (pd.to_numeric(book_data['pages'], errors='coerce')).fillna(180)
 book_data["avg_rating"] = book_data["avg_rating"].fillna(0)
 book_data["quantity"] = book_data["quantity"].fillna(0)
 book_data["authors"] = book_data["authors"].fillna('Unknown')
+book_data["manufacturer"] = book_data["manufacturer"].fillna("Unknown")
 
 authors = le.fit_transform(list(book_data['authors']))
 category = le.fit_transform(list(book_data["category"]))
