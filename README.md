@@ -1,5 +1,5 @@
 # Overview
-This Python project showcases a book recommendation system using the K-Nearest Neighbors (KNN) algorithm. Users can input a book's ID to receive recommendations for similar books based on specific features.
+This Python project showcases a book recommendation system using the K-Nearest Neighbors (KNN) and KMeans algorithms. Users can input a book's ID to receive recommendations for similar books based on specific features.
 
 # Prerequisites
 Before running the project, make sure you have the following libraries and tools installed:
@@ -17,13 +17,13 @@ To begin with the project, follow these steps:
 
 # Usage
 Using the book recommendation system:
-1. Run the project by executing the main.py script.
+1. Run the project by executing the main(GUI).py script.
 2. A graphical user interface (GUI) window will appear.
 3. Input a book's ID into the provided field and click the "Ok" button.
 4. The system employs KNN to suggest similar books based on attributes such as author, quantity, category, number of reviews, average rating, and manufacturer.
 5. The recommended books will be displayed in a table within the GUI.
 
-Note: As of the September 25th update, you have the option to run the system using raw.py without the GUI.
+Note: You have the option to run the system using rawKMeans.py or rawKNN.py without the GUI. Additionally, you can use BRS_with_user_data.py to recommend books based on user data.
 
 # Customization
 You can tailor the project to your needs by:
