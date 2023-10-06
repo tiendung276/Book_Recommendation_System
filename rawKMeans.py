@@ -28,7 +28,8 @@ avg_rating = book_data["avg_rating"]
 
 X = list(zip(authors, quantity, category, n_review, avg_rating, manufacturer))
 
-book_to_recommend = int(input("ID of book to recommend: "))
+book_to_recommend = 73787185
+"""int(input("ID of book to recommend: "))"""
 book_to_recommend_index = book_data[book_data["product_id"] == book_to_recommend].index[0]
 
 knn = NearestNeighbors(n_neighbors=9, metric='euclidean')
@@ -44,17 +45,17 @@ recommended_books_indices_kmeans = [i for i, label in enumerate(labels) if
                                     label == cluster_to_recommend and i != book_to_recommend_index]
 recommended_books_kmeans = book_data.iloc[recommended_books_indices_kmeans]
 
-features = ["authors", "quantity", "category", "n_review", "avg_rating", "manufacturer"]
+features = ["authors", "title", "quantity", "category", "n_review", "avg_rating", "manufacturer"]
 print(
     f"Book to recommend: {book_data.loc[book_to_recommend_index, 'title']} by {book_data.loc[book_to_recommend_index, 'authors']}")
 print("\nRecommended books by KNN:")
 print(recommended_books_knn[features].to_string(index=False))
 print("\nRecommended books by KMeans:")
-print(recommended_books_kmeans[features].to_string(index=False))
+print(recommended_books_kmeans[features][:9].to_string(index=False))
 
 recommended_books_indices_knn_set = set(recommended_books_indices_knn)
-recommended_books_indices_kmeans_set = set(recommended_books_indices_kmeans)
+recommended_books_indices_kmeans_set = set(recommended_books_indices_kmeans[:9])
 common_indices = recommended_books_indices_knn_set & recommended_books_indices_kmeans_set
 
 print(
-    f"The number of recommended books suggested by KNN falls within the same cluster as the book to be recommended according to K-Means: {len(common_indices)}")
+    f"The number of recommended books suggested by KNN falls within the same cluster as the book to be recommended according to K-Means: {len(common_indices)} / 9")
