@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 from collections import Counter
 
 # customer data
-customer_data = pd.read_csv("comments.csv", sep=",").iloc[:, :-1]
+customer_data = pd.read_csv("data//comments.csv", sep=",").iloc[:, :-1]
 customer_data = customer_data.drop_duplicates()
 le = LabelEncoder()
 
@@ -18,12 +18,14 @@ rating = customer_data["rating"]
 thank_count = customer_data["thank_count"]
 
 # BOOK DATA
-book_data = pd.read_csv("book_data.csv", sep=",")
+book_data = pd.read_csv("data//book_data.csv", sep=",")
 book_data = book_data.drop_duplicates()
 
 book_data["authors"] = book_data["authors"].fillna('Unknown')
 authors = le.fit_transform(list(book_data['authors']))
 
+index = book_data["category"].str.lower().str.contains('tập')
+book_data.loc[index, 'category'] = 'Truyện Tranh'
 category = le.fit_transform(list(book_data["category"]))
 
 book_data["manufacturer"] = book_data["manufacturer"].fillna("Unknown")
@@ -56,7 +58,7 @@ high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recomm
 
 book_features = list(
     zip(authors, category, manufacturer, original_price, current_price, quantity, n_review, avg_rating, pages))
-knn = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(book_features)
+knn = NearestNeighbors(n_neighbors=7, algorithm='ball_tree').fit(book_features)
 distances, indices = knn.kneighbors(book_features)
 
 recommended_books = []
@@ -64,13 +66,18 @@ for book_id in high_rated_books:
     book_idx = np.where(product_id == book_id)[0][0]
     for i in indices[book_idx][1:]:
         recommended_books.append(product_id[i])
-
 print(f"Những cuốn sách mà người dùng {customer_to_recommend} đã đọc :")
 
 for i in range(merged_data.shape[0]):
     if merged_data.loc[i, "customer_id"] == customer_to_recommend:
-        print(merged_data.loc[i, "title_y"], " Tác Giả :", merged_data.loc[i, "authors"])
+        print(merged_data.loc[i, "title_y"], "|Thể Loại:", merged_data.loc[i, "category"], "|Tác Giả:",
+              merged_data.loc[i, "authors"])
 
 print("\nSách được đề xuất cho khách hàng", customer_to_recommend, "là:")
 for book_id in recommended_books:
-    print(title[np.where(product_id == book_id)[0][0]])
+    print(book_data["title"][np.where(product_id == book_id)[0][0]], "|Thể Loại:",
+          book_data["category"][np.where(product_id == book_id)[0][0]], "|Tác Giả:",
+          book_data["authors"][np.where(product_id == book_id)[0][0]])
+
+"""    print(title[np.where(product_id == book_id)[0][0]])
+"""
