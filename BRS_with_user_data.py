@@ -57,7 +57,7 @@ high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recomm
     'product_id']
 
 book_features = list(
-    zip(authors, category, manufacturer, original_price, current_price, quantity, n_review, avg_rating, pages))
+    zip(authors, category * 2, manufacturer, original_price, current_price, quantity, n_review, avg_rating, pages))
 knn = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(book_features)
 distances, indices = knn.kneighbors(book_features)
 
