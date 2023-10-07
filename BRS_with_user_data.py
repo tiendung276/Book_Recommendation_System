@@ -51,14 +51,14 @@ title = book_data["title"]
 
 merged_data = pd.merge(customer_data, book_data, on='product_id').drop_duplicates()
 
-customer_to_recommend = 27
+customer_to_recommend = merged_data['customer_id'].sample(n=1).iloc[0]
 
 high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recommend) & (merged_data['rating'] >= 4)][
     'product_id']
 
 book_features = list(
     zip(authors, category, manufacturer, original_price, current_price, quantity, n_review, avg_rating, pages))
-knn = NearestNeighbors(n_neighbors=7, algorithm='ball_tree').fit(book_features)
+knn = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(book_features)
 distances, indices = knn.kneighbors(book_features)
 
 recommended_books = []
@@ -66,16 +66,17 @@ for book_id in high_rated_books:
     book_idx = np.where(product_id == book_id)[0][0]
     for i in indices[book_idx][1:]:
         recommended_books.append(product_id[i])
-print(f"Những cuốn sách mà người dùng {customer_to_recommend} đã đọc :")
+
+print(f"Books that user {customer_to_recommend} has read:")
 
 for i in range(merged_data.shape[0]):
     if merged_data.loc[i, "customer_id"] == customer_to_recommend:
-        print(merged_data.loc[i, "title_y"], "|Thể Loại:", merged_data.loc[i, "category"], "|Tác Giả:",
+        print(merged_data.loc[i, "title_y"], "|Category:", merged_data.loc[i, "category"], "|Author:",
               merged_data.loc[i, "authors"])
 
-print("\nSách được đề xuất cho khách hàng", customer_to_recommend, "là:")
+print("\nBooks recommended for customer", customer_to_recommend, "are:")
 for book_id in recommended_books:
-    print(book_data["title"][np.where(product_id == book_id)[0][0]], "|Thể Loại:",
-          book_data["category"][np.where(product_id == book_id)[0][0]], "|Tác Giả:",
+    book_data = book_data.reset_index(drop=True)
+    print(book_data["title"][np.where(product_id == book_id)[0][0]], "|Category:",
+          book_data["category"][np.where(product_id == book_id)[0][0]], "|Author:",
           book_data["authors"][np.where(product_id == book_id)[0][0]])
-
