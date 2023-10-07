@@ -79,5 +79,3 @@ for book_id in recommended_books:
           book_data["category"][np.where(product_id == book_id)[0][0]], "|Tác Giả:",
           book_data["authors"][np.where(product_id == book_id)[0][0]])
 
-"""    print(title[np.where(product_id == book_id)[0][0]])
-"""
