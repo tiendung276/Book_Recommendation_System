@@ -1,10 +1,7 @@
 import pandas as pd
-import sklearn
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-from sklearn.cluster import KMeans
-from collections import Counter
 
 # customer data
 customer_data = pd.read_csv("data//comments.csv", sep=",").iloc[:, :-1]
@@ -17,7 +14,7 @@ cmt_id = customer_data["comment_id"]
 rating = customer_data["rating"]
 thank_count = customer_data["thank_count"]
 
-# BOOK DATA
+# book data
 book_data = pd.read_csv("data//book_data.csv", sep=",")
 book_data = book_data.drop_duplicates()
 
@@ -56,8 +53,7 @@ customer_to_recommend = merged_data['customer_id'].sample(n=1).iloc[0]
 high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recommend) & (merged_data['rating'] >= 4)][
     'product_id']
 
-book_features = list(
-    zip(authors, category * 2, manufacturer, original_price, current_price, quantity, n_review, avg_rating, pages))
+book_features = list(zip(authors, category * 2, manufacturer, quantity, n_review, avg_rating, pages))
 knn = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(book_features)
 distances, indices = knn.kneighbors(book_features)
 
@@ -65,14 +61,14 @@ recommended_books = []
 for book_id in high_rated_books:
     book_idx = np.where(product_id == book_id)[0][0]
     for i in indices[book_idx][1:]:
-        recommended_books.append(product_id[i])
+        recommended_books.append(product_id.iloc[i])
 
 print(f"Books that user {customer_to_recommend} has read:")
 
 for i in range(merged_data.shape[0]):
     if merged_data.loc[i, "customer_id"] == customer_to_recommend:
-        print(merged_data.loc[i, "title_y"], "|Category:", merged_data.loc[i, "category"], "|Author:",
-              merged_data.loc[i, "authors"])
+        print(merged_data.loc[i, "title_y"], " |Category:", merged_data.loc[i, "category"], " |Author:",
+              merged_data.loc[i, "authors"], " |Rating", merged_data.loc[i, "rating"])
 
 print("\nBooks recommended for customer", customer_to_recommend, "are:")
 for book_id in recommended_books:
