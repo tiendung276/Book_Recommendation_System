@@ -50,6 +50,12 @@ merged_data = pd.merge(customer_data, book_data, on='product_id').drop_duplicate
 
 customer_to_recommend = merged_data['customer_id'].sample(n=1).iloc[0]
 
+print(f"Books that user {customer_to_recommend} has read:")
+for i in range(merged_data.shape[0]):
+    if merged_data.loc[i, "customer_id"] == customer_to_recommend:
+        print(merged_data.loc[i, "title_y"], " |Category:", merged_data.loc[i, "category"], " |Author:",
+              merged_data.loc[i, "authors"], " |Rating", merged_data.loc[i, "rating"])
+
 high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recommend) & (merged_data['rating'] >= 4)][
     'product_id']
 
@@ -62,13 +68,6 @@ for book_id in high_rated_books:
     book_idx = np.where(product_id == book_id)[0][0]
     for i in indices[book_idx][1:]:
         recommended_books.append(product_id.iloc[i])
-
-print(f"Books that user {customer_to_recommend} has read:")
-
-for i in range(merged_data.shape[0]):
-    if merged_data.loc[i, "customer_id"] == customer_to_recommend:
-        print(merged_data.loc[i, "title_y"], " |Category:", merged_data.loc[i, "category"], " |Author:",
-              merged_data.loc[i, "authors"], " |Rating", merged_data.loc[i, "rating"])
 
 print("\nBooks recommended for customer", customer_to_recommend, "are:")
 for book_id in recommended_books:
