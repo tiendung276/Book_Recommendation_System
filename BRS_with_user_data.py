@@ -8,6 +8,7 @@ customer_data = pd.read_csv("data//comments.csv", sep=",").iloc[:, :-1]
 customer_data = customer_data.drop_duplicates()
 le = LabelEncoder()
 
+comment_title = customer_data["title"]
 customer_id = customer_data["customer_id"]
 book_id = customer_data["product_id"]
 cmt_id = customer_data["comment_id"]
@@ -44,7 +45,7 @@ pages = (pd.to_numeric(book_data['pages'], errors='coerce')).fillna(180)
 
 product_id = book_data["product_id"]
 
-title = book_data["title"]
+book_title = book_data["title"]
 
 merged_data = pd.merge(customer_data, book_data, on='product_id').drop_duplicates()
 
