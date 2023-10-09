@@ -54,7 +54,7 @@ customer_to_recommend = 20363628
 high_rated_books = merged_data[(merged_data['customer_id'] == customer_to_recommend) & (merged_data['rating'] >= 4)][
     'product_id']
 
-book_features = list(zip(authors, category * 2, manufacturer, quantity, n_review, avg_rating, pages))
+book_features = list(zip(authors, category, manufacturer, quantity, n_review, avg_rating, pages))
 
 kmeans = KMeans(n_clusters=7, n_init=10, random_state=0).fit(book_features)
 labels = kmeans.labels_
